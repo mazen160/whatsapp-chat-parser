@@ -15,7 +15,7 @@ REGEX_MESSAGE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\](.)+(: )(.+)"""
 
 
 def __parse_timestamp(s):
-    return datetime.strptime(s, '[%d/%m/%Y, %H:%M:%S]')
+    return datetime.strptime(s, '[%d/%m/%y, %H:%M:%S]')
 
 
 def __remove_chars(s):
