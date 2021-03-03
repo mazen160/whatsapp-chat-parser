@@ -21,7 +21,7 @@ python3 setup.py install
 
 ```python
 from whatsapp_chat_parser import get_messages
-messages = get_messages("chat.txt")
+messages = get_messages("chat.txt") 
 for message in messages["chats"]:
   print(message["author"])
   print(message["message"])
@@ -34,7 +34,7 @@ for descriptive_message in messages["descriptive_messages"]:
 # API
 
 ```python
->>> messages = whatsapp_chat_parser.get_messages("chat.txt")
+>>> messages = whatsapp_chat_parser.get_messages("chat.txt") # Parameters: path of the chat txt file, and an optional date format string (Default: [%d/%m/%Y, %H:%M:%S])
 >>> messages["chats"]  # Chats, ordered by timestamp.
 >>> for message in messages["chats"]:
 >>>   message["chats"]["timestamp"] # Timestamp in datetime
