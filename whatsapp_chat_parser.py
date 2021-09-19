@@ -13,9 +13,10 @@ REGEX_DATE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\]"""
 REGEX_CONTACT = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\](.+?)(: )"""
 REGEX_MESSAGE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\](.)+(: )(.+)"""
 
+DATE_FORMAT = '[%d/%m/%Y, %H:%M:%S]'
 
-def __parse_timestamp(s):
-    return datetime.strptime(s, '[%d/%m/%Y, %H:%M:%S]')
+def __parse_timestamp(s, date_format):
+    return datetime.strptime(s, date_format)
 
 
 def __remove_chars(s):
@@ -25,7 +26,7 @@ def __remove_chars(s):
     return s
 
 
-def get_messages(chat_export_path):
+def get_messages(chat_export_path, date_format=DATE_FORMAT):
     f = open(chat_export_path, "r")
     original_messages = f.read().split("\n")
     f.close()
@@ -48,7 +49,7 @@ def get_messages(chat_export_path):
 
         original_timestamp = re.search(REGEX_DATE, m).group(0)
         data["original_date"] = original_timestamp
-        data["timestamp"] = __parse_timestamp(original_timestamp)
+        data["timestamp"] = __parse_timestamp(original_timestamp, date_format)
         contact_original = re.search(REGEX_CONTACT, m)
         message_original = re.search(REGEX_MESSAGE, m)
         if not message_original:
