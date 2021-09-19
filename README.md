@@ -34,7 +34,7 @@ for descriptive_message in messages["descriptive_messages"]:
 # API
 
 ```python
->>> messages = whatsapp_chat_parser.get_messages("chat.txt") # Parameters: path of the chat txt file, and an optional date format string (Default: [%d/%m/%Y, %H:%M:%S])
+>>> messages = whatsapp_chat_parser.get_messages("chat.txt") # Parameters: path of the chat txt file, and an optional (date_format) string (default date_format: [%d/%m/%Y, %H:%M:%S])
 >>> messages["chats"]  # Chats, ordered by timestamp.
 >>> for message in messages["chats"]:
 >>>   message["chats"]["timestamp"] # Timestamp in datetime
