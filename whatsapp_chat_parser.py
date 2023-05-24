@@ -9,11 +9,16 @@
 from datetime import datetime
 import re
 
-REGEX_DATE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\]"""
-REGEX_CONTACT = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\](.+?)(: )"""
-REGEX_MESSAGE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\](.)+(: )(.+)"""
+# *For older versions of Whatsapp Export*
+# REGEX_DATE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\]"""
+# REGEX_CONTACT = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\](.+?)(: )"""
+# REGEX_MESSAGE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\](.)+(: )(.+)"""
 
-DATE_FORMAT = '[%d/%m/%Y, %H:%M:%S]'
+REGEX_DATE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+ [a-zA-Z]{2}\]"""
+REGEX_CONTACT = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+ [a-zA-Z]{2}\](.+?)(: )"""
+REGEX_MESSAGE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+ [a-zA-Z]{2}\](.)+(: )(.+)"""
+
+DATE_FORMAT = '[%d/%m/%y, %I:%M:%S %p]' 
 
 def __parse_timestamp(s, date_format):
     return datetime.strptime(s, date_format)
