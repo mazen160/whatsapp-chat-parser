@@ -9,27 +9,28 @@
 from datetime import datetime
 import re
 
-REGEX_DATE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\]"""
-REGEX_CONTACT = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\](.+?)(: )"""
-REGEX_MESSAGE = """^(\u200e){0,1}\[[0-9\/]+(, )[0-9:]+\](.)+(: )(.+)"""
+REGEX_DATE = """^(\u200e){0,1}\[[0-9\-\:]+, [0-9:]+\W(AM|PM)\]"""
+REGEX_CONTACT = f"{REGEX_DATE}(.+?):\W"
+REGEX_MESSAGE = f"""{REGEX_DATE}.+:\W(.+)"""
 
-DATE_FORMAT = '[%d/%m/%Y, %H:%M:%S]'
+DATE_FORMAT = '[%Y-%m-%d, %I:%M:%S %p]'
+
 
 def __parse_timestamp(s, date_format):
     return datetime.strptime(s, date_format)
 
 
 def __remove_chars(s):
-    chars = ["\u202a", "\u202c", "\xa0", "\u2011"]
+    chars = ["\u202a", "\u202c", "\xa0", "\u2011", "\u200e", "\u202f"]
     for c in chars:
         s = s.replace(c, "")
     return s
-
 
 def get_messages(chat_export_path, date_format=DATE_FORMAT):
     f = open(chat_export_path, "r")
     original_messages = f.read().split("\n")
     f.close()
+
     messages = []
     descriptive_messages = []
 
@@ -58,10 +59,11 @@ def get_messages(chat_export_path, date_format=DATE_FORMAT):
             message_original = message_original.groups()[-1]
 
         if contact_original is None:
-            descriptive_messages.append(m)
+            descriptive_messages.append(__remove_chars(m))
             continue
-        if "security code changed." in m:
-            descriptive_messages.append(m)
+        if "security code changed." in m or "Your security code with" in m:
+            # Security code changed
+            descriptive_messages.append(__remove_chars(m))
             continue
 
         data["author"] = contact_original.group(3)
